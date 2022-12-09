@@ -67,11 +67,7 @@ import axios from "axios";
 
 export default {
   data() {
-    return {
-      hour: 0,
-      minute: 0,
-      second: 0,
-    };
+    return {};
   },
   computed: {
     taskID() {
