@@ -28,7 +28,7 @@ func CreateTask(title string, userId int, categoryId int) error {
 		status,
 		start_time,
 		end_time,
-		created_at) values (?, ?, ?, ?, ?, ?, ?)`
+		created_at) values ($1, $2, $3, $4, $5, $6, $7)`
 
 	_, err = Db.Exec(cmd, title, userId, categoryId, 1, time.Now(), time.Now(), time.Now())
 	if err != nil {
@@ -40,7 +40,7 @@ func CreateTask(title string, userId int, categoryId int) error {
 
 func GetTask(id int) (task Task, err error) {
 	task = Task{}
-	cmd := `select id, title, user_id, category_id, status, start_time, end_time, created_at from tasks where id = ?`
+	cmd := `select id, title, user_id, category_id, status, start_time, end_time, created_at from tasks where id = $1`
 	err = Db.QueryRow(cmd, id).Scan(
 		&task.ID,
 		&task.Title,
@@ -57,7 +57,7 @@ func GetTask(id int) (task Task, err error) {
 }
 
 func (u *User) GetTasksByUser() (tasks []Task, err error) {
-	cmd := `select id, title, user_id, category_id, status, start_time, end_time, created_at from tasks where user_id = ? order by start_time desc`
+	cmd := `select id, title, user_id, category_id, status, start_time, end_time, created_at from tasks where user_id = $1 order by start_time desc`
 	rows, err := Db.Query(cmd, u.ID)
 	if err != nil {
 		log.Println(err)
@@ -87,7 +87,7 @@ func (u *User) GetTasksByUser() (tasks []Task, err error) {
 }
 
 func (u *User) GetTaskByStatusTrue() (task Task, err error) {
-	cmd := `select id, title, user_id, category_id, status, start_time, end_time, created_at from tasks where status = ? and user_id = ? order by created_at desc`
+	cmd := `select id, title, user_id, category_id, status, start_time, end_time, created_at from tasks where status = $1 and user_id = $2 order by created_at desc`
 
 	_ = Db.QueryRow(cmd, 1, u.ID).Scan(
 		&task.ID,
@@ -103,7 +103,7 @@ func (u *User) GetTaskByStatusTrue() (task Task, err error) {
 }
 
 func (t *Task) UpdateTask() (err error) {
-	cmd := `update tasks set title = ?, category_id = ?, status = ?, start_time = ?, end_time = ? where id = ?`
+	cmd := `update tasks set title = $1, category_id = $2, status = $3, start_time = $4, end_time = $5 where id = $6`
 	_, _ = Db.Exec(cmd, t.Title, t.CategoryID, t.Status, t.StartTime, t.EndTime, t.ID)
 	if err != nil {
 		log.Fatalln(err)
@@ -126,7 +126,7 @@ func (t *Task) CalculateSub() (sub time.Duration) {
 }
 
 func (t *Task) DeleteTask() (err error) {
-	cmd := `delete from tasks where id = ?`
+	cmd := `delete from tasks where id = $1`
 	_, err = Db.Exec(cmd, t.ID)
 	if err != nil {
 		log.Fatalln(err)

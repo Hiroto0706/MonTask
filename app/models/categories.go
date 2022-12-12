@@ -15,7 +15,7 @@ type Category struct {
 }
 
 func GetCategoryByCategoryName(userId int, name string) (category Category, err error) {
-	cmd := `select id, name, color_id, user_id, created_at from categories where user_id = ? and name = ?`
+	cmd := `select id, name, color_id, user_id, created_at from categories where user_id = $1 and name = $2`
 
 	err = Db.QueryRow(cmd, userId, name).Scan(
 		&category.ID,
@@ -36,7 +36,7 @@ func CreateCategory(name string, userId int) (err error) {
 		name,
 		color_id,
 		user_id,
-		created_at) values (?, ?, ?, ?)`
+		created_at) values ($1, $2, $3, $4)`
 
 	_, err = Db.Exec(cmd, name, 11, userId, time.Now())
 	if err != nil {
@@ -50,7 +50,7 @@ func CreateCategoryFromList(name string, userId int, colorId int) (err error) {
 		name,
 		color_id,
 		user_id,
-		created_at) values (?, ?, ?, ?)`
+		created_at) values ($1, $2, $3, $4)`
 
 	_, err = Db.Exec(cmd, name, colorId, userId, time.Now())
 	if err != nil {
@@ -61,7 +61,7 @@ func CreateCategoryFromList(name string, userId int, colorId int) (err error) {
 }
 
 func GetCategory(id int) (category Category, err error) {
-	cmd := `select id, name, color_id, user_id, created_at from categories where id = ?`
+	cmd := `select id, name, color_id, user_id, created_at from categories where id = $1`
 
 	err = Db.QueryRow(cmd, id).Scan(
 		&category.ID,
@@ -74,7 +74,7 @@ func GetCategory(id int) (category Category, err error) {
 }
 
 func (u *User) GetCategoriesByUserID() (categories []Category, err error) {
-	cmd := `select id, name, color_id, user_id, created_at from categories where user_id = ?`
+	cmd := `select id, name, color_id, user_id, created_at from categories where user_id = $1`
 	rows, err := Db.Query(cmd, u.ID)
 	if err != nil {
 		log.Println(err)
@@ -102,7 +102,7 @@ func (u *User) GetCategoriesByUserID() (categories []Category, err error) {
 }
 
 func (c *Category) UpdateCategory() (err error) {
-	cmd := `update categories set name = ?, color_id = ? where id = ?`
+	cmd := `update categories set name = $1, color_id = $2 where id = $3`
 	_, _ = Db.Exec(cmd, c.Name, c.ColorID, c.ID)
 	if err != nil {
 		log.Fatalln(err)
@@ -112,7 +112,7 @@ func (c *Category) UpdateCategory() (err error) {
 }
 
 func (c *Category) DeleteCategory() (err error) {
-	cmd := `delete from categories where id = ?`
+	cmd := `delete from categories where id = $1`
 	_, err = Db.Exec(cmd, c.ID)
 	if err != nil {
 		log.Println(err)

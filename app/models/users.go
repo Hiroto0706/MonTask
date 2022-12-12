@@ -16,7 +16,7 @@ func (u *User) CreateUser() (err error) {
 	cmd := `insert into users (
 		uuid,
 		email, 
-		created_at) values (?, ?, ?)`
+		created_at) values ($1, $2, $3)`
 
 	_, err = Db.Exec(cmd, createUUID(), u.Email, time.Now())
 	if err != nil {
@@ -28,7 +28,7 @@ func (u *User) CreateUser() (err error) {
 
 func GetUserByEmail(email string) (user *User, err error) {
 	user = &User{}
-	cmd := `select id, uuid, email, created_at from users where email = ?`
+	cmd := `select id, uuid, email, created_at from users where email = $1`
 	err = Db.QueryRow(cmd, email).Scan(
 		&user.ID,
 		&user.UUID,
@@ -40,7 +40,7 @@ func GetUserByEmail(email string) (user *User, err error) {
 
 func GetUserById(id int) (user *User, err error) {
 	user = &User{}
-	cmd := `select id, uuid, email, created_at from users where id = ?`
+	cmd := `select id, uuid, email, created_at from users where id = $1`
 	err = Db.QueryRow(cmd, id).Scan(
 		&user.ID,
 		&user.UUID,
@@ -52,7 +52,7 @@ func GetUserById(id int) (user *User, err error) {
 
 func GetUser(id int) (user User, err error) {
 	user = User{}
-	cmd := `select id, uuid, email, created_at from users where id = ?`
+	cmd := `select id, uuid, email, created_at from users where id = $1`
 	err = Db.QueryRow(cmd, id).Scan(
 		&user.ID,
 		&user.UUID,

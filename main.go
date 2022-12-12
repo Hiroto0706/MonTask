@@ -3,6 +3,7 @@ package main
 import (
 	"montask/app/handler"
 	"montask/app/models"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -48,5 +49,6 @@ func main() {
 	//グラフに関するハンドラー
 
 	// local サーバー
-	e.Logger.Fatal(e.Start(":8000"))
+	port := os.Getenv("PORT")
+	e.Logger.Fatal(e.Start(":" + port))
 }
