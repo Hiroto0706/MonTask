@@ -28,7 +28,6 @@ export default {
       },
       set: async function (value) {
         this.$store.state.editCategory.color_id = value;
-        console.log(value);
 
         const categoryColor = new URLSearchParams();
         categoryColor.append(

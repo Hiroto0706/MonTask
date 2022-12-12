@@ -7,7 +7,7 @@
       class="text--primary pa-3 mb-6"
     >
       <div class="d-flex justify-space-between">
-        <h3 class="px-2 pt-2">{{ arrayTasks.date }}</h3>
+        <h3 class="px-2 pt-2">{{ date(arrayTasks.date) }}</h3>
         <p class="px-2 pt-2">{{ sumTime(arrayTasks.Tasks) }}</p>
       </div>
 
@@ -241,6 +241,30 @@ export default {
         minute = Math.floor((sum / 60) % 60);
         minute < 10 ? (minute = "0" + minute) : minute;
         return hour + " h " + minute + " min";
+      };
+    },
+    date() {
+      return function (date) {
+        const today = new Date();
+        const todayDate =
+          today.getFullYear() +
+          "/" +
+          (today.getMonth() + 1) +
+          "/" +
+          today.getDate();
+        if (todayDate == date) {
+          return "today";
+        }
+        const yesterday =
+          today.getFullYear() +
+          "/" +
+          (today.getMonth() + 1) +
+          "/" +
+          (today.getDate() - 1);
+        if (yesterday == date) {
+          return "yesterday";
+        }
+        return date;
       };
     },
     categoryColor() {

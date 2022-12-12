@@ -16,6 +16,8 @@ func main() {
 	//CORSの設定(vueのプロジェクトをGOで立てたlocalサーバーで起動する時は不要)
 	e.Use(middleware.CORS())
 
+	// e.Static("/", "dist/")
+
 	//サインイン、ログイン、ログアウトに関するHandler
 	e.POST("/signup", handler.Register)
 	e.POST("/login", handler.Login)

@@ -192,7 +192,6 @@ export default {
         return this.$store.state.editTaskCategory.id;
       },
       set(value) {
-        console.log(value);
         this.$emit("updateCategoryName", value, this.$store.state.editTask.id);
       },
     },
@@ -204,7 +203,13 @@ export default {
 
       axios.post("http://localhost:8000/deleteTask", taskData).then(() => {
         this.$emit("close");
-        this.$store.dispatch("getTasks");
+        this.$store.dispatch("getTasks").then(() => {
+          this.$store
+            .dispatch("setData", this.$store.state.date)
+            .then((response) => {
+              this.$store.state.events = response;
+            });
+        });
       });
       this.$store.state.editTask = [];
       this.$store.state.editTaskCategory = [];

@@ -66,7 +66,6 @@ export default {
   },
   methods: {
     clickTask(task) {
-      console.log(task.title, this.$store.state.runTaskName);
       this.$store.dispatch("getRunTaskName", task.title);
       this.$store.dispatch("getRunTaskCategoryName", task.Category.name);
       this.$store.dispatch("getRunTaskColorID", task.Category.color_id);

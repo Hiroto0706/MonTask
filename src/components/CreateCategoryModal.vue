@@ -57,7 +57,6 @@ export default {
       this.$store.state.createCategory = false;
     },
     changeColor(e) {
-      console.log(e);
       this.$store.state.createCategoryColor = this.$store.state.color[e].name;
       this.$store.state.createCategoryColorID = e;
     },
