@@ -5,36 +5,38 @@
       <div class="modal__close" @click="close">×</div>
       <h3 class="mb-2">Tasks</h3>
       <hr />
-      <v-list
-        v-for="(task, index) in this.$store.state.tasksUnique"
-        :key="index"
-        class="task"
-      >
-        <div class="mb-1" @click="clickTask(task)" v-show="taskShow(task)">
-          <span class="mx-2 font-weight-bold">{{ task.title }}</span>
-          <v-icon x-small class="pa-2" :color="colorName(task)">
-            mdi-circle
-          </v-icon>
-          <span
-            class="font-weight-bold"
-            :class="{
-              'red--text': colorName(task) == 'red',
-              'pink--text': colorName(task) == 'pink',
-              'purple--text': colorName(task) == 'purple',
-              'indigo--text': colorName(task) == 'indigo',
-              'blue--text': colorName(task) == 'blue',
-              'cyan--text': colorName(task) == 'cyan',
-              'teal--text': colorName(task) == 'teal',
-              'green--text': colorName(task) == 'green',
-              'lime--text': colorName(task) == 'lime',
-              'orange--text': colorName(task) == 'orange',
-              'brown--text': colorName(task) == 'brown',
-              'black--text': colorName(task) == 'black',
-            }"
-            >{{ task.Category.name }}</span
-          >
-        </div>
-      </v-list>
+      <div class="scroll">
+        <v-list
+          v-for="(task, index) in this.$store.state.tasksUnique"
+          :key="index"
+          class="task"
+        >
+          <div class="mb-1" @click="clickTask(task)" v-show="taskShow(task)">
+            <span class="mx-2 font-weight-bold">{{ task.title }}</span>
+            <v-icon x-small class="pa-2" :color="colorName(task)">
+              mdi-circle
+            </v-icon>
+            <span
+              class="font-weight-bold"
+              :class="{
+                'red--text': colorName(task) == 'red',
+                'pink--text': colorName(task) == 'pink',
+                'purple--text': colorName(task) == 'purple',
+                'indigo--text': colorName(task) == 'indigo',
+                'blue--text': colorName(task) == 'blue',
+                'cyan--text': colorName(task) == 'cyan',
+                'teal--text': colorName(task) == 'teal',
+                'green--text': colorName(task) == 'green',
+                'lime--text': colorName(task) == 'lime',
+                'orange--text': colorName(task) == 'orange',
+                'brown--text': colorName(task) == 'brown',
+                'black--text': colorName(task) == 'black',
+              }"
+              >{{ task.Category.name }}</span
+            >
+          </div>
+        </v-list>
+      </div>
     </v-card>
   </div>
 </template>
@@ -95,6 +97,7 @@ export default {
   left: 30px;
   width: 50%;
   min-width: 330px;
+  max-height: 600px;
 }
 
 .modal__close {
@@ -114,6 +117,10 @@ export default {
   width: 100%;
   height: 100vh;
   cursor: pointer;
+}
+.scroll {
+  max-height: 480px;
+  overflow: scroll;
 }
 .task {
   cursor: pointer;

@@ -374,9 +374,6 @@ export default new Vuex.Store({
             continue;
           }
         }
-        if (this.state.tasksUnique.length >= 18) {
-          break;
-        }
       }
     },
     updateTasksPerDate: async function () {
